@@ -7,6 +7,10 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+<<<<<<< HEAD
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+=======
+>>>>>>> #13-DB
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +18,9 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+<<<<<<< HEAD
+@EntityListeners(AuditingEntityListener.class) /* 이거 없으면 테스트 할때 createdAt 때문에 에러남(Ex04 관련) */
+=======
 /** 할일: Lombok 사용하기
  * 주의: maven 떄랑 같은 방식인 것들도 이름이 다르게 되어 있으니 헷갈리지 않게 주의!
  *
@@ -30,6 +37,7 @@ import java.util.Set;
 * @Index - 데이터베이스 인덱스는 추가, 쓰기, 및 저장공간을 희생해서 테이블에 대한 데이터 검색 속도를 향상시키는 데이터 구조
 *          @Entity와 세트로 사용
 *  */
+>>>>>>> #13-DB
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
@@ -45,6 +53,20 @@ public class Article {
     @Id // '전체 필드 중에서 이게 PK다' 라고 말해주는것. @Id 가 없으면 @Entity 에러남.
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 해당 필드가 auto_increment인 경우 @GeneratedValue을 써서 자동으로 값이 생성되게 해줘야 한다. 기본키 전략
     private Long id;
+<<<<<<< HEAD
+
+    @Setter @Column(nullable = false) private String title;   // 제목
+    @Setter @Column(nullable = false, length = 10000) private String content; // 본문
+    @Setter private String hashtag; // 해시태그
+
+    /* 양방향 */
+    @OrderBy("id")  // 양방향 바인딩을 할건데 정렬 기준을 id로 하겠다는 뜻
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @ToString.Exclude /** 이거 중요. 맨 위에 @ToString 이 있는데 마우스 올려보면 '@ToString includes~ lazy load 어쩌고' 나온다.
+     이건 퍼모먼스, 메모리 저하를 일으킬수 있어서 성능적으로 않좋은 영향을 줄 수 있다. 그래서 해당 필드를 가려주세요 하는 거 */
+    private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
+=======
+>>>>>>> #13-DB
 
     /* @Setter  도 @Getter 처럼 클래스 단위로 걸 수 있는데, 그렇게 하면 모든 필드에 접근이 가능해진다.
     *   그런데 id는 내가 부여하는게 아니라 JPA 에서 자동으로 부여해주는 번호이다. 메타데이터들도 자동으로 JPA가 셋팅 하게 만들어야 한다. 그래서 id와 메타데이터는 @Setter 가 필요없다.
@@ -87,8 +109,11 @@ public class Article {
     @CreatedBy
     @Setter @Column(nullable = false, length = 100)
     private String createdBy;    // 생성자
+<<<<<<< HEAD
+=======
     /** 다른 생성일시 같은것들은 알아낼 수 있는데, 최초 생성자는 (현재 코드 상태)인증받고 오지 않았기 떄문에 따로 알아낼 수가 없다.
      *  이때 아까 만든 jpaConfig 파일을 사용한다.     */
+>>>>>>> #13-DB
 
     @LastModifiedDate
     @Setter @Column(nullable = false)
@@ -98,6 +123,8 @@ public class Article {
     @Setter @Column(nullable = false, length = 100)
     private String modifiedBy;  // 수정자
 
+<<<<<<< HEAD
+=======
     /* 위에 처럼 어노테이션을 붙여주기만하면 auditing이 작동한다.
     * @CreatedDate  : 최초에 insert 할떄 자동으로 한번 넣어준다.
     * @CreatedBy    : 최초에 insert 할때 자동으로 한번 넣어준다.
@@ -108,6 +135,7 @@ public class Article {
     /** Entity 를 만들때는 무조건 기본 생성자가 필요하다.
      *  public 또는 protected만 가능한데, 평생 아무데서도 기본생성자를 안쓰이게 하고싶어서 protected로 변경함
      *  */
+>>>>>>> #13-DB
     protected Article() {}
 
     /** 사용자가 입력하는 값만 받기. 나머지는 시스템이 알아서 하게 해주면 됨. */
@@ -120,6 +148,8 @@ public class Article {
     public static Article of(String title, String content, String hashtag) {
         return new Article(title,content,hashtag);
     }
+<<<<<<< HEAD
+=======
     /* 정적 팩토리 메서드 (factory method pattern 중에 하나)
     *  정적 팩토리 메서드란 객체 생성 역할을 하는 클래스 메서드 라는 뜻
     *  of 메시드를 이용해서 위에 있는 private 생성자를 직접적으로 사용해서 객체를 생성하게 하는 방법
@@ -158,6 +188,7 @@ public class Article {
 
         체크 박스 여러번 나올건데 id 만 체크해서 만들면됨
      */
+>>>>>>> #13-DB
 
 
     @Override
@@ -173,6 +204,8 @@ public class Article {
         return Objects.hash(id);
     }
 
+<<<<<<< HEAD
+=======
     /** ==와 equals 차이
      *
      * == : 동일성 비교, 값이랑 주소값까지 비교.
@@ -185,4 +218,5 @@ public class Article {
      *      여러 객체를 비교할때는 equals()를 사용하면 Integer를 비교하는데 많은 시간이 소요된다.
      *
      * */
+>>>>>>> #13-DB
 }

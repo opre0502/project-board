@@ -10,7 +10,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /** 할일: Lombok 사용하기
  * 주의: maven 떄랑 같은 방식인 것들도 이름이 다르게 되어 있으니 헷갈리지 않게 주의!
@@ -38,7 +40,7 @@ import java.util.Objects;
                 그래서 기본키(PK)가 뭔지 알려줘야 한다. 그게 @Id 에너테이션 이다. */
 @Getter /* 2) getter/setter/toString 등의 롬복 어노테이션 사용 */ // 롬복의 @Getter를 쓰면 알아서 모든 필드이 getter 들이 생성된다.
 @ToString
-public class Ex01_1_Article_엔티티로_변경 {
+public class Ex02_1_Article_바인딩_설정 {
 
     @Id // '전체 필드 중에서 이게 PK다' 라고 말해주는것. @Id 가 없으면 @Entity 에러남.
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 해당 필드가 auto_increment인 경우 @GeneratedValue을 써서 자동으로 값이 생성되게 해줘야 한다. 기본키 전략
@@ -55,8 +57,21 @@ public class Ex01_1_Article_엔티티로_변경 {
     @Setter @Column(nullable = false, length = 10000) private String content; // 본문
     @Setter private String hashtag; // 해시태그
 
-    /* 양방향
+    /* 양방향  바인딩 */
+    @OrderBy("id")  // 양방향 바인딩을 할건데 정렬 기준을 id로 하겠다는 뜻
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @ToString.Exclude /** 이거 중요. 맨 위에 @ToString 이 있는데 마우스 올려보면 '@ToString includes~ lazy load 어쩌고' 나온다.
+     이건 퍼모먼스, 메모리 저하를 일으킬수 있어서 성능적으로 않좋은 영향을 줄 수 있다. 그래서 해당 필드를 가려주세요 하는 거 */
+    private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
+    /* 이건 더 중요: @ToString.Exclude 이걸 안해주면 순환참조 이슈가 생길수 있다.
+    * 여기서 ToString이 id, title, content, hashtag 다 찍고 Set<ArticleComment> 부분을 찍으려고
+    * ArticleComment.java 파일에 가서 거기 있는 @ToString 이 원소들 다찍으려고 하면서 원소들 중에
+    * private Article article; 을 보는 순간 다시 Article 의 @ToString 이 동작하면서 또 모든 원소들을 찍으려고 하고,
+    * 그러다가 Set<ArticleComment>를 보고 또 ArticleComment 로 가서 ToString 돌리고... 이런식으로
+    * 동작하면서 메모리가 터질수 있다. 그래서 Set<ArticleComment> 에  @ToString.Exclude 을 달아준다
     *
+    * ArticleComment에 걸지않고 Article에 걸어주는 이유는 댓글이 글을 참조하는건 정상적인 경우인데, 반대로 글이
+    * 댓글을 참조하는건 일반적인 경우는 아니기 떄문에 Article에 exclude 를 걸어준다.
     * */
 
 
@@ -93,17 +108,17 @@ public class Ex01_1_Article_엔티티로_변경 {
     /** Entity 를 만들때는 무조건 기본 생성자가 필요하다.
      *  public 또는 protected만 가능한데, 평생 아무데서도 기본생성자를 안쓰이게 하고싶어서 protected로 변경함
      *  */
-    protected Ex01_1_Article_엔티티로_변경() {}
+    protected Ex02_1_Article_바인딩_설정() {}
 
     /** 사용자가 입력하는 값만 받기. 나머지는 시스템이 알아서 하게 해주면 됨. */
-    private Ex01_1_Article_엔티티로_변경(String title, String content, String hashtag) {
+    private Ex02_1_Article_바인딩_설정(String title, String content, String hashtag) {
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
-    public static Ex01_1_Article_엔티티로_변경 of(String title, String content, String hashtag) {
-        return new Ex01_1_Article_엔티티로_변경(title,content,hashtag);
+    public static Ex02_1_Article_바인딩_설정 of(String title, String content, String hashtag) {
+        return new Ex02_1_Article_바인딩_설정(title,content,hashtag);
     }
     /* 정적 팩토리 메서드 (factory method pattern 중에 하나)
     *  정적 팩토리 메서드란 객체 생성 역할을 하는 클래스 메서드 라는 뜻
@@ -149,7 +164,7 @@ public class Ex01_1_Article_엔티티로_변경 {
     public boolean equals(Object o){
          if (this == o) return true;
          if (o == null || getClass() != o.getClass()) return false;
-         Ex01_1_Article_엔티티로_변경 article = (Ex01_1_Article_엔티티로_변경) o;
+         Ex02_1_Article_바인딩_설정 article = (Ex02_1_Article_바인딩_설정) o;
          return id.equals(article.id);
 //         return id != null && id.equals(article.id);
     }
@@ -170,8 +185,4 @@ public class Ex01_1_Article_엔티티로_변경 {
      *      여러 객체를 비교할때는 equals()를 사용하면 Integer를 비교하는데 많은 시간이 소요된다.
      *
      * */
-<<<<<<< HEAD
-
-=======
->>>>>>> #13-DB
 }

@@ -19,4 +19,5 @@ public class Ex00_2_ArticleComment {
     private String createdBy;    // 생성자
     private LocalDateTime modifiedAt;   // 생성일시
     private String modifiedBy;  // 수정자
+
 }

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
 })
-public class Ex01_2_ArticleComment_엔티티로_변경 {
+public class Ex02_2_ArticleComment_바인딩_설정 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +56,5 @@ public class Ex01_2_ArticleComment_엔티티로_변경 {
     @LastModifiedBy
     @Setter @Column(nullable = false, length = 100)
     private String modifiedBy;  // 수정자
-
 
 }

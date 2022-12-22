@@ -57,5 +57,8 @@ public class Ex01_2_ArticleComment_엔티티로_변경 {
     @Setter @Column(nullable = false, length = 100)
     private String modifiedBy;  // 수정자
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> #13-DB
 }

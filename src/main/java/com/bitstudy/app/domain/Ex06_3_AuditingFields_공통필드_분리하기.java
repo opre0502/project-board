@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @ToString
 @EntityListeners(AuditingEntityListener.class) /* 이거 없으면 테스트 할때 createdAt 때문에 에러남(Ex04 관련)*/
 @MappedSuperclass
-public class AuditingFields {
+public class Ex06_3_AuditingFields_공통필드_분리하기 {
     //메타데이터
     @CreatedDate
     @Column(nullable = false)

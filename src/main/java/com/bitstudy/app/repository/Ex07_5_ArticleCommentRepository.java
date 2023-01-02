@@ -1,8 +1,6 @@
 package com.bitstudy.app.repository;
 
-import com.bitstudy.app.domain.Article;
 import com.bitstudy.app.domain.ArticleComment;
-import com.bitstudy.app.domain.QArticle;
 import com.bitstudy.app.domain.QArticleComment;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.StringExpression;
@@ -15,7 +13,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 /** */
 
 @RepositoryRestResource
-public interface ArticleCommentRepository extends JpaRepository<ArticleComment, Long>,
+public interface Ex07_5_ArticleCommentRepository extends JpaRepository<ArticleComment, Long>,
         QuerydslPredicateExecutor<ArticleComment>
         , QuerydslBinderCustomizer<QArticleComment> {
 

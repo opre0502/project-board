@@ -1,5 +1,6 @@
 package com.bitstudy.app.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /** 뷰 엔드포인트 관련 컨트롤러
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *      그 외의 css, img, 그리고 js 들은 resources > static 폴더 안에 작성 가능
  * */
 
+@Controller
 @RequestMapping("/articles")    //모든 경로들은 /articles로 시작하니까 클래스 레벨에 1차로 @RequestMapping("/articles") 걸어놨음
 public class Ex08_1_ArticleController_게시판_뷰_비어있는거 {
 

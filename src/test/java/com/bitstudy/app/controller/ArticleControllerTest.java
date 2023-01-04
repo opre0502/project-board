@@ -58,7 +58,7 @@ class ArticleControllerTest {
                 // contentType 의 경우 exact match 라서 미디어타입이 딱 text/html 로 나오는것만 허용
                 // contentTypeCompatibleWith 를 이용해서 호환되는 타입까지 맞다고 쳐주는거
 
-                .andExpect(view().name("article/index"))
+                .andExpect(view().name("articles/index"))
                 // 가져온 뷰 파일명이 index 인지 확인
                 .andExpect(model().attributeExists("articles"));
                 // 이 뷰에서 게시글들이 떠야 하는데, 그 말은 서버에서 데이터들을 가져왔다는 말이다. 그러면 모델 어트리뷰트로 데이터를 밀어 줬다는 말인데 그게 있는지 없는지 확인

@@ -41,7 +41,7 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public String article(@PathVariable Long articleId, ModelMap map) {
-        map.addAttribute("article","aaa"); // 지금 당장은 받아오지 않기 떄문에 nul 이라고 넣었지만, 테스트할때에는 뭐라도 문자열을 넣어줘서 모델에 담기도록 하낟.
+        map.addAttribute("article", null); // 지금 당장은 받아오지 않기 때문에 null 이라고 넣었지만, 테스트할때에는 뭐라도 문자열을 넣줘서 모델에 담기도록 한다.
         map.addAttribute("articleComments", List.of());
         return "articles/detail";
     }

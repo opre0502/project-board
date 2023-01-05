@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /** 통합테스트로 변경해서 테스트 할거임
  *
- * Ex07_3_2에서 articleCommentByArticle()만 추가됨
+ * Ex07_3_2 에서 articleCommentAllByArticle만 추가됨.
  * */
 
 
@@ -62,25 +62,25 @@ public class Ex07_3_3_DataRestTest_모든_테스트_완료 {
                 .andExpect(content().contentType(MediaType.valueOf("application/hal+json")));
     }
 
+
     @DisplayName("[api] - 댓글 단건 조회")
     @Test
     void articleCommentOne() throws Exception {
 
-        mvc.perform(get("/api/articleComments/1"))
+        mvc.perform(get("/api/articles/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.valueOf("application/hal+json")));
     }
 
+
     @DisplayName("[api] - 게시글의 댓글 리스트 조회")
     @Test
-    void articleCommentByArticle() throws Exception {
+    void articleCommentAllByArticle() throws Exception {
 
         mvc.perform(get("/api/articles/1/articleComments"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.valueOf("application/hal+json")));
     }
-
-
 }
 
 

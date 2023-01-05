@@ -59,11 +59,12 @@ public class Ex07_3_2_DataRestTest_성공하는테스트 {
                 .andExpect(content().contentType(MediaType.valueOf("application/hal+json")));
     }
 
+
     @DisplayName("[api] - 댓글 단건 조회")
     @Test
     void articleCommentOne() throws Exception {
 
-        mvc.perform(get("/api/articleComments/1"))
+        mvc.perform(get("/api/articles/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.valueOf("application/hal+json")));
     }

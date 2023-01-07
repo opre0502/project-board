@@ -1,4 +1,4 @@
-package com.bitstudy.app.repository;//package com.bitstudy.app.repository;
+package com.bitstudy.app.repository;
 
 
 import com.bitstudy.app.config.JpaConfig;
@@ -70,13 +70,17 @@ class JpaRepositoryTest {
         long prevCount = articleRepository.count();
 
         // insert 하기
-        UserAccount userAccount = userAccountRepository.save(UserAccount.of("bitstudy","asdf",null,null,null));
-        Article article =  Article.of(userAccount,"제목","내용","#해시태그"); // new Article
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("bitstudy", "asdf",null, null, null));
+        Article article =  Article.of(userAccount, "제목","내용","#해시태그"); // new Article
         articleRepository.save(article);
 
         // 기존꺼랑 현재꺼랑 개수 차이 구하기
         assertThat(articleRepository.count()).isEqualTo(prevCount + 1);
 
+        /* !! 주의: 이상태로 테스트를 돌리면 createdAt 이거 못찾는다고 에러남.
+        이유: jpaConfig 파일에 auditing을 쓰겠다고 셋팅을 해놨는데,
+        해당 엔티티(Article.java) 에서 auditing을 쓴다고 명시를 안해놓은 상태라서.
+        엔티티 가서 클래스레벨로 @EntityListensers(AuditingEntityListener.class) 걸어주자 */
     }
 
 
@@ -84,13 +88,39 @@ class JpaRepositoryTest {
     @DisplayName("update 테스트")
     @Test
     void updateTest() {
+        /** 기존의 데이터 하나 있어야 되고, 그걸 수정했을때를 관찰할거임.
+         *
+         * 1) 기존의 영속성 컨텍스트로부터 하나 엔티티를 객체를 가져온다. (DB에서 한줄 뽑아온다)
+         * 2) 업데이트로 해시태그를 바꾸기 */
+
+        /* 순서1) 기존의 영속성 컨텍스트로부터 하나 엔티티를 객체를 가져온다. (DB에서 한줄 뽑아온다)
+            articleRepository -> 기존의 영속성 컨텍스트로부터
+            findById(1L) -> 하나 엔티티를 객체를 가져온다
+            .orElseThrow() -> 없으면 throw 시켜서 일단 테스트가 끝나게 하자
+        */
         Article article = articleRepository.findById(1L).orElseThrow();
 
+        /* 순서2) 업데이트로 해시태그를 바꾸기
+            엔티티에 있은 setter 를 이용해서 updateHaghtag 에 있는 문자열로 업데이트 하기
+        *   1. 변수 updateHashtag 에 바꿀 문자열 저장
+            2. 엔티티(article)에 있는 setter를 이용해서 변수 updateHashtag 에 있는 문자열을 넣고
+                (해시태그 바꿀꺼니까 setHashtag. 이름 어찌할지모르겠으면 실제 엔티티 파일 가서 setter 만들어보기. 그 이름 그대로 쓰면 됨)
+            3. 데이터 베이스에 업데이트 하기
+        * */
         String updateHashtag = "#abcd";
         article.setHashtag(updateHashtag);
         //articleRepository.save(article);
         Article savedArticle = articleRepository.saveAndFlush(article);
+        /** save 로 놓고 테스트를 돌리면 콘솔(Run)탭에 update 구문이 나오지 않고 select 구문만 나온다. 이유는 영속성 컨텍스트로부터 가져온 데이터를 그냥 save만 하고 아무것도 하지 않고 끝내버리면 어짜피 롤백 되니까 스프링부트는 다시 원래의 값으로 돌아가질거다. 그래서 그냥 했다 치고 update 를 하지 않는다.(코드의 유효성은 확인)
+         그래서 save 를 하고 flush를 해줘야 한다.
 
+         - flush 란 (push 같은거)
+         1. 변경점 감지
+         2. 수정된 Entity 를 sql 저장소에 등록
+         3. sql 저장소에 있는 쿼리를 DB에 전송
+         * */
+
+        /* 순서3) 위에서 바꾼 savedArticle 에 업데이트 된 hashtag 필드에 updateHashtag 에 저장되어 있는 값("#abcd") 이 있는지 확인해봐라  */
         assertThat(savedArticle).hasFieldOrPropertyWithValue("hashtag", updateHashtag);
 //        assertThat(savedArticle.getHashtag()).isEqualTo(updateHashtag);
     }
@@ -100,13 +130,31 @@ class JpaRepositoryTest {
     @DisplayName("delete 테스트")
     @Test
     void deleteTest() {
+        /**  기존의 데이터들이 있다고 치고, 그중에 값을 하나 꺼내고, 지워야 한다.
+         *
+         * 1) 기존의 영속성 컨텍스트로부터 하나 엔티티를 객체를 가져온다. => findById
+         * 2) 지우면 DB에서 하나 사라지기 때문에 count 를 구해놓고 => .count()
+         * 3) delete 하고( -1) => .delete();
+         * 4) 2번에서 구한 count와 지금 순간의 개수 비교해서 1 차이나면 테스트 통과 => .isEqualTo()
+         * */
 
+        /* 1) 기존의 영속성 컨텍스트로부터 하나 엔티티를 객체를 가져온다.
+        * - 순서
+            articleRepository -> 기존의 영속성 컨텍스트로부터
+            findById(1L) -> 하나 엔티티를 객체를 가져온다
+            .orElseThrow() -> 없으면 throw 시켜서 일단 테스트가 끝나게 하자
+        * */
         Article article = articleRepository.findById(1L).orElseThrow();
 
+        /* 2) 지우면 DB에서 하나 사라지기 때문에 count 를 구해놓고
+        * 게시글(articleRepository) 뿐만 아니라, 연관된 댓글(articleCommentRepository) 까지 삭제할거라서 두개의 개수를 다 알아내기.
+        *  */
         long prevArticleCount = articleRepository.count();
         long prevArticleCommentCount = articleCommentRepository.count(); // 데이터베이스에 있는 모든 댓글의 수
         int deletedCommentSize = article.getArticleComments().size(); // 해당 게시글에 딸려있는 댓글의 수
+        // 나중에 "모든 댓글의 수 - 게시글에 딸려있는 댓글 수" 하면 몇개 지워졌는지 알 수 있다.
 
+        /* 3) delete 하고 (전체 게시글 개수 -1 됨) */
         articleRepository.delete(article);
 
         /* 테스트 통과 조건 - 2번에서 구한거랑 여기서 구하는 개수가 1 차이나는 경우 */

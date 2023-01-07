@@ -31,6 +31,7 @@ public class Article extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 해당 필드가 auto_increment 인 경우 @GeneratedValue 를 써서 자동으로 값이 생성되게 해줘야 한다. (기본키 전략)
     private long id; // 게시글 고유 아이디
 
+    /* 새로 추가 */
     @Setter
     @ManyToOne(optional = false) // 단방향
     private UserAccount userAccount;
@@ -54,15 +55,15 @@ public class Article extends AuditingFields {
 
     protected Article() {}
 
-    private Article(UserAccount userAccount, String title, String content, String hashtag) {
-        this.userAccount = userAccount;
+    private Article(/* 새로 추가 */UserAccount userAccount, String title, String content, String hashtag) {
+/* 새로 추가 */this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
-    public static Article of(UserAccount userAccount, String title, String content, String hashtag){
-        return new Article(userAccount,title,content,hashtag);
+    public static Article of(/* 새로 추가 */UserAccount userAccount, String title, String content, String hashtag){
+        return new Article(/* 새로 추가 */userAccount, title,content,hashtag);
     }
 
     @Override

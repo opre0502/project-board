@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -35,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityConfig.class)
 @WebMvcTest(ArticleController.class) 
 @DisplayName("view 컨트롤러 - 게시글")
-class ArticleControllerTest {
+class Ex11_6_ArticleControllerTest {
 
     private final MockMvc mvc;
     @MockBean private ArticleService articleService;
@@ -45,7 +44,7 @@ class ArticleControllerTest {
 
     . */
 
-    public ArticleControllerTest(@Autowired MockMvc mvc) {
+    public Ex11_6_ArticleControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
 

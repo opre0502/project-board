@@ -29,6 +29,7 @@ public class ArticleComment extends AuditingFields {
     @ManyToOne(optional = false) // 필수 값이라는 뜻
     private Article article;
 
+    /* 새로 추가 */
     @Setter
     @ManyToOne(optional = false) // 필수 값이라는 뜻
     private UserAccount userAccount;
@@ -56,14 +57,14 @@ public class ArticleComment extends AuditingFields {
 
     protected ArticleComment() {}
 
-    private ArticleComment(Article article, UserAccount userAccount, String content) {
+    private ArticleComment(Article article, /* 새로 추가 */UserAccount userAccount, String content) {
         this.article = article;
-        this.userAccount = userAccount;
+/* 새로 추가 */this.userAccount = userAccount;
         this.content = content;
     }
 
-    public ArticleComment of(Article article, UserAccount userAccount, String content) {
-        return new ArticleComment(article, userAccount, content);
+    public static ArticleComment of(Article article, /* 새로 추가 */UserAccount userAccount, String content) {
+        return new ArticleComment(article, /* 새로 추가 */userAccount, content);
     }
 
     @Override

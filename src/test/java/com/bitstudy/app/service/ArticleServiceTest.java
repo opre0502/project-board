@@ -9,6 +9,9 @@ import com.bitstudy.app.dto.ArticleWithCommentsDto;
 import com.bitstudy.app.dto.UserAccountDto;
 import com.bitstudy.app.repository.ArticleRepository;
 import org.apache.catalina.User;
+import com.bitstudy.app.domain.type.SearchType;
+import com.bitstudy.app.dto.ArticleDto;
+import com.bitstudy.app.repository.ArticleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +30,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 
 /** 서비스 비지니스 로직은 슬라이스 테스트 기능 사용 안하고 만들어볼거임
@@ -215,19 +221,5 @@ class ArticleServiceTest {
         );
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

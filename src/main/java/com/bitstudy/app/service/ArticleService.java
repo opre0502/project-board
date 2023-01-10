@@ -1,6 +1,7 @@
 package com.bitstudy.app.service;
 
 
+
 import com.bitstudy.app.domain.Article;
 import com.bitstudy.app.domain.type.SearchType;
 import com.bitstudy.app.dto.ArticleCommentDto;
@@ -9,17 +10,28 @@ import com.bitstudy.app.dto.ArticleWithCommentsDto;
 import com.bitstudy.app.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import com.bitstudy.app.domain.type.SearchType;
+import com.bitstudy.app.dto.ArticleDto;
+import com.bitstudy.app.repository.ArticleRepository;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import javax.persistence.EntityNotFoundException;
 
 
 /** 기능 관련된 로직을 다 여기다가 짤거임.  */
-
 @Slf4j
+
+
+/** 기능 관련된 로직을 다 여기다가 짤거임.  */
+
+
 @Service
 @RequiredArgsConstructor // 필수 필드에 대한 생성자를 자동으로 만들어주는 롬복 애너테이션
 @Transactional // 이 클래스 동작하다가 하나라도 잘못되면 다시 롤백 시켜라 라는 뜻
@@ -30,7 +42,11 @@ public class ArticleService {
     // 검색용
     @Transactional(readOnly = true) // 트랜잭션을 읽기 전용 모드로 설정. 실수로 커밋해도 flush 가 되지 않아서 엔티티가 등록, 수정, 삭제 가 되지 않는다.
     public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
+
 //        return Page.empty();
+
+        return Page.empty();
+
 
         /* page: 전체 데이터 건수 조회 (데이터를 다 가지고 있다)
                 getTotalElements(): 개수 뽑기
@@ -114,6 +130,7 @@ public class ArticleService {
     /* 게시글 삭제 */
     public void deleteArticle(long articleId) {
         articleRepository.deleteById(articleId);
+    }
     }
 
 

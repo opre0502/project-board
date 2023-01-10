@@ -30,6 +30,7 @@ public interface ArticleRepository extends
     Page<Article> findByTitleContaining(String title, Pageable pageable);
 
     /* 내용으로 검색할때 */
+
     Page<Article> findByContentContaining(String content, Pageable pageable);
 
     /* 유저아이디로 검색할때 */
@@ -40,6 +41,10 @@ public interface ArticleRepository extends
 
     /* 해시태그로 검색할때 */
     Page<Article> findByHashtagContaining(String hashtag, Pageable pageable);
+
+    /* 유저아이디로 검색할때 */
+    /* 닉네임으로 검색할떄 */
+    /* 해시태그로 검색할때 */
 
 
 

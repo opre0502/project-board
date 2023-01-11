@@ -5,7 +5,6 @@ import com.bitstudy.app.dto.ArticleWithCommentsDto;
 import com.bitstudy.app.dto.UserAccountDto;
 import com.bitstudy.app.service.ArticleService;
 import com.bitstudy.app.service.PaginationService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -32,14 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityConfig.class)
 @WebMvcTest(ArticleController.class) 
 @DisplayName("view 컨트롤러 - 게시글")
-class ArticleControllerTest {
+class Ex12_3_ArticleControllerTest_페이징 {
 
     private final MockMvc mvc;
     @MockBean private ArticleService articleService;
 
     @MockBean private PaginationService paginationService;
 
-    public ArticleControllerTest(@Autowired MockMvc mvc) {
+    public Ex12_3_ArticleControllerTest_페이징(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
 
@@ -71,23 +69,16 @@ class ArticleControllerTest {
     public void articlesOne() throws Exception {
 
         Long articleId = 1L;
-
-/*새거*/ long totalCount = 1L; /* Long은 null 가능, long은 불가*/
-
         given(articleService.getArticle(articleId)).willReturn(createArticleWithCommentsDto());
-
-/*새거*/ given(articleService.getArticleCount()).willReturn(totalCount);
 
         mvc.perform(get("/articles/1")) /** 테스트니까 그냥 1번 글 가져와라 할거임 */
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/detail"))
                 .andExpect(model().attributeExists("article"))
-                .andExpect(model().attributeExists("articleComments"))
-/*새거*/         .andExpect(model().attributeExists("totalCount"));
+                .andExpect(model().attributeExists("articleComments"));
 
         then(articleService).should().getArticle(articleId);
-/*새거*/ then(articleService).should().getArticleCount();
     }
 
 //    /**3) 게시판 검색 전용*/

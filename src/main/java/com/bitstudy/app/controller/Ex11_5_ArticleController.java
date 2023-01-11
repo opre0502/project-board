@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 /** 뷰 엔드포인트 관련 컨트롤러
  *
  * 엑셀 api 에 보면 정의해놓은 view 부분에 url 들이 있다. 그거 보면서 하면됨
- /articles	                    GET	게시판 페이지
- /articles/{article-id}	        GET	게시글 페이지
- /articles/serach	            GET	게시판 검색 전용 페이지
- /articles/serach-hashtag	    GET	게시판 해시태그 검색 전용 페이지
+    /articles	                    GET	게시판 페이지
+    /articles/{article-id}	        GET	게시글 페이지
+    /articles/serach	            GET	게시판 검색 전용 페이지
+    /articles/serach-hashtag	    GET	게시판 해시태그 검색 전용 페이지
  *
 
  * */

@@ -26,26 +26,20 @@ public interface ArticleRepository extends
                  2. 검색용 필드를 추가
     *  */
 
-    /* 제목으로 검색할떄 */
+    /* 제목으로 검색할때 */
     Page<Article> findByTitleContaining(String title, Pageable pageable);
 
     /* 내용으로 검색할때 */
-
-    Page<Article> findByContentContaining(String content, Pageable pageable);
-
-    /* 유저아이디로 검색할때 */
-    Page<Article> findByUserAccount_UserIdContaining(String Id, Pageable pageable);
-
-    /* 닉네임으로 검색할떄 */
-    Page<Article> findByUserAccount_NicknameContaining(String nickname, Pageable pageable);
-
-    /* 해시태그로 검색할때 */
-    Page<Article> findByHashtagContaining(String hashtag, Pageable pageable);
+    Page<Article> findByContentContaining(String title, Pageable pageable);
 
     /* 유저아이디로 검색할때 */
-    /* 닉네임으로 검색할떄 */
-    /* 해시태그로 검색할때 */
+    Page<Article> findByUserAccount_UserIdContaining(String title, Pageable pageable);
 
+    /* 닉네임으로 검색할때 */
+    Page<Article> findByUserAccount_NicknameContaining(String title, Pageable pageable);
+
+    /* 해시태그로 검색할때 */
+    Page<Article> findByhashtagContaining(String title, Pageable pageable);
 
 
     @Override

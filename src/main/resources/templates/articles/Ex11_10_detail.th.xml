@@ -33,23 +33,6 @@
                 <attr sel="p" th:text="${articleComment.content}" />
             </attr>
         </attr>
-
-
-<!--        페이징 -->
-        <attr sel="#pagination">
-            <attr sel="ul">
-                <attr sel="li[0]/a"
-                      th:href="@{${article.id} - 1 <= 0 ? '#': |/articles/*{id - 1}|}"
-                      th:class="'page-link' + (*{id} - 1 <= 0 ? ' disabled': '')"
-
-                />
-                <attr sel="li[1]/a"
-                      th:href="@{*{id} >= ${totalCount} ? '#': |/articles/*{id + 1}|}"
-                      th:class="'page-link' + (*{id}  >= ${totalCount} ? ' disabled': '')"
-                />
-            </attr>
-        </attr>
-
     </attr>
 
 

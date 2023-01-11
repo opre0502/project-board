@@ -53,29 +53,30 @@ class ArticleCommentServiceTest {
     }
 
     /* 댓글 저장 */
-    @DisplayName("댓글 정보를 입력하면, 댓글 저장")
+    @DisplayName("댓글 내용를 입력하면, 댓글 저장")
     @Test
     void givenCommentInfo_thenSaveComment() {
         // Given
         ArticleCommentDto dto = createArticleCommentDto("댓글");
         given(articleRepository.getReferenceById(dto.articleId())).willReturn(createArticle());
         given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(null);
-        // When
 
+        // When
+        sut.saveArticleComment(dto);
 
         // Then
-
-
+        then(articleRepository).should().getReferenceById(dto.articleId());
+        then(articleCommentRepository).should().save(any(ArticleComment.class));
     }
 
     /* 댓글 수정 */
-    @DisplayName("댓글 내용을 입력하면, 댓글 수정")
+    @DisplayName("댓글 내용를 입력하면, 댓글 수정")
     @Test
     void givenCommentInfo_thenUpdateComment() {
         // Given
         String oldContent = "content";
         String updateContent = "댓글";
-        ArticleComment articleComment = createArticleComment(oldContent); /** 새로운 테스트용 댓글 생성 */
+        ArticleComment articleComment = createArticleComment(oldContent); /** 새로운 테스트용 댓글 생성*/
         ArticleCommentDto dto = createArticleCommentDto(updateContent);
         given(articleCommentRepository.getReferenceById(dto.id())).willReturn(articleComment);
 
@@ -83,13 +84,15 @@ class ArticleCommentServiceTest {
         sut.updateArticleComment(dto);
 
         // Then
-        assertThat(articleComment.getContent()) /* 지금 바꿔치기 한 articleComment의 content 가  */
-                .isNotEqualTo(oldContent)   /* oldContent 랑 다르고 */
-                .isEqualTo(updateContent);   /* updateContent 랑 같으면 테스트 통과 */
+        assertThat(articleComment.getContent()) /* 지금 바꿔치기 한 articleComment의 content가  */
+                .isNotEqualTo(oldContent) /* oldContent 랑 다르고*/
+                .isEqualTo(updateContent); /* updateContent 랑 같으면 테스트 통과 */
+
         then(articleCommentRepository).should().getReferenceById(dto.articleId());
     }
+
     /* 댓글 삭제 */
-    @DisplayName("댓글 id를 입력하면, 댓글 삭제")
+    @DisplayName("댓글 id 입력하면, 댓글 삭제")
     @Test
     void givenCommentId_thenDeleteComment() {
         // Given
@@ -101,12 +104,11 @@ class ArticleCommentServiceTest {
 
         // Then
         then(articleCommentRepository).should().deleteById(articleCommentId);
-
     }
 
     //////////////////////////////////////////////
 
-    private  ArticleCommentDto createArticleCommentDto(String content){
+    private ArticleCommentDto createArticleCommentDto(String content) {
         return ArticleCommentDto.of(
                 1L,
                 1L,
@@ -122,23 +124,24 @@ class ArticleCommentServiceTest {
         return UserAccountDto.of(
                 1L,
                 "bitstudy",
-                "bitstudy",
+                "password",
                 "bitstudy@email.com",
                 "bitstudy",
-                "메모메모",
+                "memo메모",
                 LocalDateTime.now(),
                 "bitstudy",
                 LocalDateTime.now(),
                 "bitstudy"
         );
     }
+
     private ArticleComment createArticleComment(String content) {
         return ArticleComment.of(
                 Article.of(
-                        createUserAccount(),
-                        "title",
-                        "content",
-                        "hashtag"
+                    createUserAccount(),
+                    "title",
+                    "content",
+                    "hashtag"
                 ),
                 createUserAccount(),
                 content
